@@ -1,0 +1,30 @@
+name: Update README Stats
+
+on:
+  schedule:
+    - cron: "0 0 * * *"   # Midnight
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Generate GitHub Stats
+        run: |
+          curl -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
+            "https://github-readme-stats.vercel.app/api?username=jojo936-creator&show_icons=true&theme=tokyonight&hide_border=true&count_private=true" \
+            -o github-stats.png
+          curl -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
+            "https://github-readme-stats.vercel.app/api/top-langs/?username=jojo936-creator&layout=compact&theme=tokyonight&hide_border=true" \
+            -o top-langs.png
+
+      - name: Commit & Push generated images
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add github-stats.png top-langs.png
+          git commit -m "Update GitHub Stats [skip ci]" || echo "No changes to commit"
+          git push
