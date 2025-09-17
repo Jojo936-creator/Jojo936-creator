@@ -2,8 +2,8 @@ name: Update README Stats
 
 on:
   schedule:
-    - cron: "0 0 * * *"   # Midnight
-  workflow_dispatch:
+    - cron: "0 0 * * *"   
+  workflow_dispatch:       
 
 jobs:
   build:
@@ -22,9 +22,12 @@ jobs:
             -o top-langs.png
 
       - name: Commit & Push generated images
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "jojo936-creator"
+          git config user.email "jojo530278@gmail.com"
           git add github-stats.png top-langs.png
           git commit -m "Update GitHub Stats [skip ci]" || echo "No changes to commit"
-          git push
+          git push https://jojo936-creator:${GH_TOKEN}@github.com/Jojo936-creator/Jojo936-creator.git HEAD:main
+
