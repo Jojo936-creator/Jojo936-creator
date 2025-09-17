@@ -11,6 +11,9 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
+        with:
+          persist-credentials: false   
+          fetch-depth: 0
 
       - name: Generate GitHub Stats
         run: |
@@ -30,4 +33,5 @@ jobs:
           git add github-stats.png top-langs.png
           git commit -m "Update GitHub Stats [skip ci]" || echo "No changes to commit"
           git push https://jojo936-creator:${GH_TOKEN}@github.com/Jojo936-creator/Jojo936-creator.git HEAD:main
+
 
